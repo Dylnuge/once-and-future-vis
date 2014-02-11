@@ -1,5 +1,5 @@
 #The Once and Future Visualization
-Project by Dylan Nugent &lt;dylnuge@gmail.com&gt;
+Project by Dylan Nugent &lt;dylnuge@gmail.com&gt;  
 University of Illinois at Urbana-Champaign
 
 ## Description

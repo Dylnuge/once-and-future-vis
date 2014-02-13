@@ -14,7 +14,7 @@
 
   min_cx = 100;
 
-  min_cy = 100;
+  min_cy = 50;
 
   max_cx = 960;
 

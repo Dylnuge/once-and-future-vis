@@ -12,7 +12,7 @@ height = 650
 min_radius = 20
 max_radius = 100
 min_cx = 100
-min_cy = 100
+min_cy = 50
 max_cx = 960
 max_cy = 550
 

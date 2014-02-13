@@ -1,3 +1,6 @@
 # Python, PIP, and Virtualenv derivables
 env/
 *.py[c|o]
+
+# Processing data
+data/

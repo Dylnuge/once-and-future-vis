@@ -61,6 +61,11 @@ def generate_chapter_data(word_list, word_count):
     # Step 2: Find the uniqueness of each word
 
     # Step 3: Scale the freq, pos, and uniqueness values to the chapter.
+    # Since the visualizer will treat 0 as nothing, let's use .1 as a minimum
+    top_words = scale_raw_values(top_words, 'pos', .1, 1)
+    top_words = scale_raw_values(top_words, 'freq', .1, 1)
+
+    return top_words
 
 def get_top_words(word_list, word_count):
     """
@@ -92,10 +97,32 @@ def get_top_words(word_list, word_count):
 
     return table[:word_count]
 
-def scale_raw_values(value_set):
+def scale_raw_values(value_set, key_name, scale_min, scale_max):
     """
+    Scale raw values to be within a range from min_val to max_val.
+
+    value_set - List of dictionary of values to be scaled.
+    key_name - The name of the key in each dictionary with the value.
+    scale_min - The low end of the scaling range.
+    scale_max - The high end of the scaling range.
+
+    Returns the value_set modified with the scaled values.
     """
-    pass
+    # Step 1: Compute the range being scaled from
+    values = [item[key_name] for item in value_set]
+    act_min = min(values)
+    act_max = max(values)
+    act_range = act_max - act_min
+    scale_range = scale_max - scale_min
+
+    # Step 2: Update values to the scaled range
+    for item in value_set:
+        value = item[key_name]
+        prescale = (value - act_min)/float(act_range)
+        scaled = (prescale * scale_range) + (scale_min)
+        item[key_name] = scaled
+
+    return value_set
 
 def write_json_outfile(data, path):
     """

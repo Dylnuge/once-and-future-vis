@@ -12,11 +12,11 @@
 
   max_radius = 100;
 
-  min_cx = 50;
+  min_cx = 100;
 
-  min_cy = 20;
+  min_cy = 100;
 
-  max_cx = 980;
+  max_cx = 960;
 
   max_cy = 600;
 
@@ -37,7 +37,7 @@
       return d3.select(this).style("fill", random_color());
     }).on("mouseout", function() {
       return d3.select(this).style("fill", random_color());
-    });
+    }).append("svg:title").text(label);
     return plot.append("svg:text").text(label).attr("text-anchor", "middle").attr("x", cx).attr("y", cy);
   };
 

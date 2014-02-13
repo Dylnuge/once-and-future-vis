@@ -11,9 +11,9 @@ width = 1000
 height = 700
 min_radius = 20
 max_radius = 100
-min_cx = 50
-min_cy = 20
-max_cx = 980
+min_cx = 100
+min_cy = 100
+max_cx = 960
 max_cy = 600
 
 random_color = () ->
@@ -41,6 +41,7 @@ add_circle = (cx, cy, r, label) ->
             d3.select(this).style("fill", random_color()))
         .on("mouseout", () ->
             d3.select(this).style("fill", random_color()))
+        .append("svg:title").text(label)
     plot.append("svg:text")
         .text(label)
         .attr("text-anchor", "middle")

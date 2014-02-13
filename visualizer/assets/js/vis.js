@@ -6,7 +6,7 @@
 
   width = 1000;
 
-  height = 700;
+  height = 650;
 
   min_radius = 20;
 
@@ -18,7 +18,7 @@
 
   max_cx = 960;
 
-  max_cy = 600;
+  max_cy = 550;
 
   random_color = function() {
     return colors[Math.floor(Math.random() * colors.length)];
@@ -26,17 +26,13 @@
 
   plot = d3.select("#vis").append("svg").attr("width", width).attr("height", height);
 
-  d3.selection.prototype.moveToFront = function() {
-    return this.each(function() {
-      return this.parentNode.appendChild(this);
-    });
-  };
-
   add_circle = function(cx, cy, r, label) {
     plot.append("circle").style("fill", random_color()).style("stroke", "gray").attr("cx", cx).attr("cy", cy).attr("r", r).on("mouseover", function() {
       return d3.select(this).style("fill", random_color());
     }).on("mouseout", function() {
       return d3.select(this).style("fill", random_color());
+    }).on("click", function() {
+      return d3.select("#selected-item").text("Selected word: " + label);
     }).append("svg:title").text(label);
     return plot.append("svg:text").text(label).attr("text-anchor", "middle").attr("x", cx).attr("y", cy);
   };

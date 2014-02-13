@@ -25,10 +25,6 @@ plot = d3.select("#vis")
     .attr("width", width)
     .attr("height", height)
 
-d3.selection.prototype.moveToFront = () ->
-    this.each () ->
-        this.parentNode.appendChild(this)
-
 # Define a make_circles function for each chapter
 add_circle = (cx, cy, r, label) ->
     plot.append("circle")
@@ -48,9 +44,15 @@ add_circle = (cx, cy, r, label) ->
         .attr("x", cx)
         .attr("y", cy)
 
+# Given a min, max, and value from 0-1, map the value to the range.
+# Eg .5 on the range 10-20 gives 15.
 get_range_value = (min, max, percent) ->
     min + (percent * (max - min))
 
+# For a specific chapter's word_list, generate a word_plot of circles for it.
+# word_list - The list of words to look at.
+# x_start - The starting x position on this plot
+# size - The x distance the plot is allowed to stretch over
 gen_word_plot = (word_list, x_start, size) ->
     min_chap_x = x_start
     max_chap_x = x_start + size

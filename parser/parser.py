@@ -2,9 +2,6 @@
 # Chapter Data Parser
 # Author: Dylan Nugent
 
-import re
-
-from nltk.corpus import stopwords
 from nltk.probability import FreqDist
 
 from document import Document
@@ -42,58 +39,57 @@ def generate_document_data(chapter_paths, word_count):
     for instance).
     """
     document = Document(chapter_paths)
-    return [generate_chapter_data(word_list, word_count) for word_list in
-            document.get_chapters()]
+    return [generate_chapter_data(word_list, word_count, document) for word_list
+            in document.get_chapters()]
 
-def generate_chapter_data(word_list, word_count):
+def generate_chapter_data(word_list, word_count, document):
     """
     Given a specific chapter, return the word/freq/uniqueness/pos data.
 
     word_list - A raw wordlist for a chapter
     word_count - The number of words to return
+    document - The document the chapter is contained within
 
     Returns the chapter component of the JSON document described in
     generate_document_data.
     """
     # Step 1: Find the top word_count words.
-    top_words = get_top_words(word_list, word_count)
+    freqs = FreqDist(word_list)
+    top_words = get_top_words(word_list, word_count, freqs)
 
-    # Step 2: Find the uniqueness of each word
+    # Step 2: Find the position and uniqueness of each word
+    for word in top_words:
+        freq = freqs['word'] / float(len(word_list))
+        # For now measure uniqueness as a (possibly negative) difference between
+        # chapter frequency and average frequency. This is scaled later.
+        word_name = word['word']
+        word['uniqueness'] = freq - document.average_chapter_frequency(word_name)
+        word['pos'] = word_list.index(word['word'])
 
     # Step 3: Scale the freq, pos, and uniqueness values to the chapter.
     # Since the visualizer will treat 0 as nothing, let's use .1 as a minimum
     top_words = scale_raw_values(top_words, 'pos', .1, 1)
     top_words = scale_raw_values(top_words, 'freq', .1, 1)
+    top_words = scale_raw_values(top_words, 'uniqueness', .1, 1)
 
     return top_words
 
-def get_top_words(word_list, word_count):
+def get_top_words(word_list, word_count, dist):
     """
     Get the top words used in a chapter.
 
     word_list - The raw word list to get top words from
     word_count - The number of words to return
+    dist - The FreqDist for the word_list
 
     Returns a list of most frequent words, their frequencies, and the first time
     they were seen.
     """
-    # Step 1: Sanitize the word list
-    # Convert everything to lowercase (e.g. so "the" and "The" match)
-    word_list = [word.lower() for word in word_list]
-    # Remove any punctuation
-    word_list = [re.sub('\p{P}','',word) for word in word_list]
-    # Remove stopwords, punctuation, and any empty word
-    stops = stopwords.words('english')
-    stops.append('')
-    word_list = [word for word in word_list if (word not in stops and
-        word.isalpha())]
-
-    # Step 2: Find and return most frequent words
-    dist = FreqDist(word_list)
-    # We want the word, freq, and pos to be set here. Frequency and position
-    # will be scaled relative to each other later, and uniqueness will be
+    # Word list has already been sanitized by get_chapters()
+    # We want the word and frequency to be set here. Frequency will be scaled
+    # relative to each other later, and uniqueness and position will be
     # calculated later.
-    table = [dict(word=w, freq=dist[w], pos=word_list.index(w)) for w in dist]
+    table = [dict(word=w, freq=dist[w]) for w in dist]
 
     return table[:word_count]
 
@@ -126,9 +122,15 @@ def scale_raw_values(value_set, key_name, scale_min, scale_max):
 
 def write_json_outfile(data, path):
     """
+    Write the data given to a JSON file.
+
+    data - The data to write out
+    path - The path to write to
     """
-    pass
+    with open(path,'w') as outfile:
+        json.dump(data, outfile, indent=4, ensure_ascii=False)
 
 if __name__ == '__main__':
     # Script is being run standalone, use the argument parser
-    pass
+    parser = argparse.ArgumentParser(description="The Once and Future \
+        Visualizer")

@@ -6,8 +6,12 @@ from nltk.probability import FreqDist
 
 from document import Document
 
+import json
 import sys
 import argparse
+
+DEFAULT_OUT = "data/out.json"
+WORD_COUNT = 25
 
 def generate_document_data(chapter_paths, word_count):
     """
@@ -134,3 +138,15 @@ if __name__ == '__main__':
     # Script is being run standalone, use the argument parser
     parser = argparse.ArgumentParser(description="The Once and Future \
         Visualizer")
+    parser.add_argument('files', nargs='+', help="Individual chapter files \
+            to use for parsing data")
+    parser.add_argument('--outfile', dest="outfile", default=DEFAULT_OUT,
+        help="Output destination (optional)")
+
+    args = parser.parse_args()
+    files = args.files
+    outfile = args.outfile
+
+    data = generate_document_data(files, WORD_COUNT)
+    write_json_outfile(data, outfile)
+    sys.exit(0)

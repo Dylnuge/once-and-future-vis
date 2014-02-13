@@ -7,13 +7,13 @@
 colors = ["#C33048", "#276168", "#FDCD8D", "#AD705B", "#EB5057"]
 
 # Constants to tweak for style
-width = 1000
+width = 1125
 height = 650
 min_radius = 20
 max_radius = 100
 min_cx = 100
 min_cy = 50
-max_cx = 960
+max_cx = 1080
 max_cy = 550
 
 random_color = () ->

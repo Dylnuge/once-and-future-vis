@@ -61,6 +61,7 @@ class Document(object):
             # Remove stopwords, punctuation, and any empty word
             stops = stopwords.words('english')
             stops.append('')
+            stops.append('said')
             word_list = [word for word in word_list if (word not in stops and
                 word.isalpha())]
 

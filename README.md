@@ -4,10 +4,17 @@ University of Illinois at Urbana-Champaign
 
 ## Description
 
-A visualization of chapters from "The Once and Future King," by T. H. White.
+Two visualizations of chapters from "The Once and Future King," by T. H. White.
 This repository contains both the code for generating the visualization input
-given the text files for the document and the code for the visualization itself.
-For copyright reasons, the input text is not included here.
+given the text files for the document and the code for the visualization
+itself.  For copyright reasons, the input text is not included here.
+
+The first visualization, in the `wordle` folder, is a chapter-by-chapter
+breakdown of unique words used within The Once and Future King.
+
+The second visualization, in the `hierarchy` folder, is a drill down view of the
+four major categories of open words (nouns, verbs, adjectives, and adverbs) used
+within The Once and Future King by their synonym categories.
 
 ## Instructions
 

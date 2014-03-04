@@ -82,11 +82,11 @@ def generate_document_data(file_path, word_count):
                     if lemma.name is not word and lemma.name not in synonyms:
                         synonyms.append(lemma.name)
             for synonym in synonyms:
-                if synonym is in most_freq_words:
+                if synonym in most_freq_words:
                     # This word is also one of the most frequent grabbed. Skip
                     # it when we reach it.
                     repeats.add(synonym)
-                if synonym is in dist:
+                if synonym in dist:
                     word_data.append({'word':synonym, 'freq': dist[synonym],
                         'syn_id': word, 'part': simple_tag})
 
